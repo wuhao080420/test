@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.zhangsan.mapper.ShopMapper">
+
+					<select id="getlist" resultType="map" parameterType="map">
+					
+					SELECT s.*,GROUP_CONCAT(g.gname) gnames from week01exam_shop s LEFT JOIN g_s gs
+					on s.sid=gs.sid LEFT JOIN week01exam_goods g 
+					ON g.gid=gs.gid 
+					
+					<where>
+					<if test="sname!=null and sname!=''">
+					sname like concat('%',#{sname},'%') 
+					</if>
+					</where>
+					GROUP BY s.sid
+					
+					</select>
+					
+					<select id="getGoodsList" resultType="Goods">
+					select * from week01exam_goods
+					</select>
+					
+					<insert id="addgs" parameterType="Gs">
+					insert into g_s(gid,sid) values(#{gid},#{sid})	
+					</insert>
+					
+					<insert id="addshop" parameterType="shop">
+					insert into week01exam_shop(sid,sname,stime) values(#{sid},#{sname},#{stime})
+					</insert>
+					
+					<select id="getshop" parameterType="int" resultType="Shop">
+					select * from week01exam_shop where sid=#{sid}
+					</select>
+					
+					
+					
+</mapper>
